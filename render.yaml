@@ -1,0 +1,32 @@
+services:
+  - name: autoscale-example-web
+    type: web
+    env: ruby
+    buildCommand: bin/render-build.sh
+    startCommand: bundle exec rails server
+    envVars:
+      - key: SECRET_KEY_BASE
+        generateValue: true
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: autoscale-example-redis
+          property: connectionString
+
+  - name: autoscale-example-worker
+    type: worker
+    env: ruby
+    plan: starter
+    buildCommand: bundle install
+    # Default to 1 worker thread unless specified in WORKER_THREADS env var
+    startCommand: "RAILS_MAX_THREADS=${WORKER_THREADS:-1} bundle exec sidekiq -q urgent -q default"
+    envVars:
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: autoscale-example-redis
+          property: connectionString
+
+  - name: autoscale-example-redis
+    type: redis
+    ipAllowList: [] # only allow connections from services in this Render account

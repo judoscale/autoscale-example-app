@@ -1,0 +1,25 @@
+{
+  "name": "Autoscale Example App",
+  "description": "A tiny Rails app for testing autoscalers",
+  "keywords": ["rails", "heroku", "add-on"],
+  "buildpacks": [
+    {
+      "url": "heroku/ruby"
+    }
+  ],
+  "env": {
+    "WEB_CONCURRENCY": {
+      "description": "Puma processes (workers) per dyno.",
+      "value": "0"
+    },
+    "RAILS_MAX_THREADS": {
+      "description": "Puma threads per process.",
+      "value": "1"
+    },
+    "WORKER_THREADS": {
+      "description": "Sidekiq concurrency.",
+      "value": "1"
+    }
+  },
+  "addons": ["heroku-redis"]
+}

@@ -33,5 +33,8 @@ module JudoscaleSampleApp
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # We're using env vars for credentials instead of credentials.yml.enc
+    config.secret_key_base = ENV['SECRET_KEY_BASE']
   end
 end
