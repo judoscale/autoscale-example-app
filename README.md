@@ -1,24 +1,23 @@
-# README
+# Autoscale Sample App
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A tiny Rails app (from the folks at [Judoscale](https://judoscale.com)) for testing autoscalers.
 
-Things you may want to cover:
+## What do you mean "testing autoscalers"?
 
-* Ruby version
+The only way to see an autoscaler in action is to force your app to hit its current server capacity. This app makes it easy by specifying how long you want requests and jobs to take.
 
-* System dependencies
+## How do I use it?
 
-* Configuration
+First, you deploy your own instance. Use one of the buttons below to deploy.
 
-* Database creation
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-* Database initialization
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/judoscale/autoscale-sample-app)
 
-* How to run the test suite
+Once deployed, just open the app in a browser and follow the instructions.
 
-* Services (job queues, cache servers, search engines, etc.)
+## How do I make changes?
 
-* Deployment instructions
+If you only want to make _configuration changes_ to your deployment, you can use the deploy buttons here without creating your own repo. Just tweak the environment variables in Heroku or Render.
 
-* ...
+If you want to make _code changes_, you'll need to [create a new repo from the template](https://github.com/judoscale/autoscale-example-app/generate) first. As long as your new repo is public, you can use the deploy buttons above (be sure to initiate the deploy from your repo, not this one).
