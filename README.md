@@ -10,7 +10,7 @@ The only way to see an autoscaler in action is to force your app to hit its curr
 
 First, you deploy your own instance. Use one of the buttons below to deploy.
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/judoscale/autoscale-example-app)
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/judoscale/autoscale-example-app)
 
@@ -20,4 +20,4 @@ Once deployed, just open the app in a browser and follow the instructions.
 
 If you only want to make _configuration changes_ to your deployment, you can use the deploy buttons here without creating your own repo. Just tweak the environment variables in Heroku or Render.
 
-If you want to make _code changes_, you'll need to [create a new repo from the template](https://github.com/judoscale/autoscale-example-app/generate) first. As long as your new repo is public, you can use the deploy buttons above (be sure to initiate the deploy from your repo, not this one).
+If you want to make _code changes_, you'll need to [create a new repo from the template](https://github.com/judoscale/autoscale-example-app/generate) first.
