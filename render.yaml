@@ -5,12 +5,9 @@ services:
     buildCommand: bin/render-build.sh
     startCommand: bundle exec rails server
     envVars:
-      - key: SECRET_KEY_BASE
-        generateValue: true
+      - fromGroup: autoscale-example-env-group
       - key: WEB_CONCURRENCY
         value: 0
-      - key: RAILS_MAX_THREADS
-        value: 1
       - key: REDIS_URL
         fromService:
           type: redis
@@ -24,9 +21,7 @@ services:
     buildCommand: bundle install
     startCommand: "bundle exec sidekiq -q urgent -q default"
     envVars:
-      # RAILS_MAX_THREADS configures Sidekiq concurrency (and the DB pool if we're using a database)
-      - key: RAILS_MAX_THREADS
-        value: 1
+      - fromGroup: autoscale-example-env-group
       - key: REDIS_URL
         fromService:
           type: redis
@@ -36,3 +31,12 @@ services:
   - name: autoscale-example-redis
     type: redis
     ipAllowList: [] # only allow connections from services in this Render account
+
+envVarGroups:
+  - name: autoscale-example-env-group
+    envVars:
+      - key: SECRET_KEY_BASE
+        generateValue: true
+      # RAILS_MAX_THREADS is used for Puma threads, Sidekiq concurrency, and the DB pool
+      - key: RAILS_MAX_THREADS
+        value: 1
