@@ -12,6 +12,37 @@
   </head>
 
   <body class="h-full">
-    <%= yield %>
+    <div class="min-h-full">
+      <div class="my-4 mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div class="border-b border-gray-200">
+          <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+            <% links = { "Home" => root_path, "Jobs" => new_job_path } %>
+            <% links.each do |name, path| %>
+              <% link_class = current_page?(path) ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' %>
+              <% link_class += ' whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium' %>
+              <%= link_to name, path, class: link_class, 'aria-current': (current_page?(path) ? 'page' : nil) %>
+            <% end %>
+          </nav>
+        </div>
+      </div>
+
+      <div class="my-12 space-y-6">
+        <% if @title %>
+          <header>
+            <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+              <h1 class="text-3xl font-bold leading-tight tracking-tight text-gray-900">
+                <%= @title %>
+              </h1>
+            </div>
+          </header>
+        <% end %>
+
+        <main>
+          <div class="mx-auto max-w-3xl sm:px-6 lg:px-8 space-y-12">
+            <%= yield %>
+          </div>
+        </main>
+      </div>
+    </div>
   </body>
 </html>
