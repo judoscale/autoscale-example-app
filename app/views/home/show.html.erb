@@ -22,14 +22,14 @@
           </p>
         </div>
 
-        <%= form_with method: :get do |form| %>
+        <%= form_with model: @latency, url: false, method: :get do |form| %>
           <div class="border-t pt-12 space-y-6">
             <p class="prose">How long do you want the request to take?</p>
 
             <div class="space-y-2">
               <% latency_opts.each do |value, label| %>
                 <label class="flex items-center">
-                  <%= form.radio_button :latency, value, class: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" %>
+                  <%= form.radio_button :ms, value, class: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" %>
                   <span class="block ml-3 text-sm font-medium text-gray-700"><%= label %></span>
                 </label>
               <% end %>

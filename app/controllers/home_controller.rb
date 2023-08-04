@@ -1,7 +1,10 @@
 class HomeController < ApplicationController
   def show
-    if latency = params[:latency]&.to_i
-      sleep latency / 1000.0
+    @latency = Latency.new
+
+    if params[:latency]
+      @latency.attributes = params.require(:latency).permit(:ms)
+      @latency.sleep!
     end
   end
 end
