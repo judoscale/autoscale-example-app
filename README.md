@@ -1,4 +1,4 @@
-# Autoscale Sample App
+# Autoscale Example App
 
 A tiny Rails app (from the folks at [Judoscale](https://judoscale.com)) for testing autoscalers.
 
@@ -12,7 +12,7 @@ First, you deploy your own instance. Use one of the buttons below to deploy.
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/judoscale/autoscale-sample-app)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/judoscale/autoscale-example-app)
 
 Once deployed, just open the app in a browser and follow the instructions.
 
