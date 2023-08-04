@@ -16,11 +16,13 @@
 
 <%= form_with model: @manager, url: false, method: :get do |form| %>
   <div class="border-t pt-12 space-y-10">
-    <%= field do %>
-      <%= label "How long do you want the request to take?" %>
-      <%= radio_buttons form, :latency, latency_opts %>
+    <%= form.field do %>
+      <%= form.label "How long do you want the request to take?" %>
+
+      <% latency_opts = { 1000 => "1 sec", 5000 => "5 sec", 10_000 => "10 sec", 25_000 => "25 sec" } %>
+      <%= form.radio_buttons :latency, latency_opts %>
     <% end %>
 
-    <%= button_row "Send request" %>
+    <%= form.button_row "Send request" %>
   </div>
 <% end %>
