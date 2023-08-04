@@ -1,10 +1,10 @@
 class HomeController < ApplicationController
   def show
-    @latency = Latency.new
+    @manager = RequestManager.new
 
-    if params[:latency]
-      @latency.attributes = params.require(:latency).permit(:ms)
-      @latency.sleep!
+    if params[:request_manager]
+      @manager.attributes = params.require(:request_manager).permit(:latency)
+      @manager.sleep!
     end
   end
 end

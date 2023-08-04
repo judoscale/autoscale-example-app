@@ -1,0 +1,57 @@
+<div class="prose max-w-none">
+  <p>
+    Use this form to enqueue jobs and trigger worker autoscaling.
+    Reload the page to update the queue metrics.
+  </p>
+
+  <div class="not-prose mt-8 -mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full align-middle sm:px-6 lg:px-8">
+      <% if @queues.none? %>
+        <p class="italic">
+          There are no Sidekiq queues yet. Enqueue some jobs to create a queue.
+        </p>
+      <% else %>
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead>
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Queue</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Pending Jobs</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Latency</th>
+            </tr>
+          </thead>
+
+          <tbody class="divide-y divide-gray-200">
+            <% @queues.each do |queue| %>
+              <tr>
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0"><%= queue.name %></td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= queue.size %> jobs</td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><%= queue.latency.round(2) %> seconds</td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<%= form_with model: @manager, url: jobs_path do |form| %>
+  <div class="border-t pt-12 space-y-10">
+    <%= field do %>
+      <%= label "How many jobs do you want to enqueue?" %>
+      <%= radio_buttons form, :jobs, jobs_opts %>
+    <% end %>
+
+    <%= field do %>
+      <%= label "How long do you want the job(s) to take?" %>
+      <%= radio_buttons form, :latency, latency_opts %>
+    <% end %>
+
+    <%= field do %>
+      <%= label "Which queue?" %>
+      <%= radio_buttons form, :queue, queue_opts %>
+    <% end %>
+
+    <%= button_row "Enqueue job(s)" %>
+  </div>
+<% end %>
