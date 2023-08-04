@@ -1,3 +1,31 @@
+GIT
+  remote: https://github.com/judoscale/judoscale-ruby
+  revision: 019a9cc309edafdf9d8d85d442f0e25b762733ad
+  branch: main
+  glob: judoscale-rails/*.gemspec
+  specs:
+    judoscale-rails (1.5.0)
+      judoscale-ruby (= 1.5.0)
+      railties
+
+GIT
+  remote: https://github.com/judoscale/judoscale-ruby
+  revision: 019a9cc309edafdf9d8d85d442f0e25b762733ad
+  branch: main
+  glob: judoscale-ruby/*.gemspec
+  specs:
+    judoscale-ruby (1.5.0)
+
+GIT
+  remote: https://github.com/judoscale/judoscale-ruby
+  revision: 019a9cc309edafdf9d8d85d442f0e25b762733ad
+  branch: main
+  glob: judoscale-sidekiq/*.gemspec
+  specs:
+    judoscale-sidekiq (1.5.0)
+      judoscale-ruby (= 1.5.0)
+      sidekiq (>= 5.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -190,6 +218,9 @@ DEPENDENCIES
   bootsnap
   debug
   importmap-rails
+  judoscale-rails!
+  judoscale-ruby!
+  judoscale-sidekiq!
   propshaft
   puma (~> 5.0)
   rails (~> 7.0)

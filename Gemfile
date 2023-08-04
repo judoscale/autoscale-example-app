@@ -11,6 +11,9 @@ gem "tailwindcss-rails"
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
 gem "sidekiq"
+gem "judoscale-ruby", git: "https://github.com/judoscale/judoscale-ruby", branch: "main", glob: "judoscale-ruby/*.gemspec"
+gem "judoscale-rails", git: "https://github.com/judoscale/judoscale-ruby", branch: "main", glob: "judoscale-rails/*.gemspec"
+gem "judoscale-sidekiq", git: "https://github.com/judoscale/judoscale-ruby", branch: "main", glob: "judoscale-sidekiq/*.gemspec"
 
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
