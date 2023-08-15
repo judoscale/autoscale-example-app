@@ -1,29 +1,29 @@
 GIT
   remote: https://github.com/judoscale/judoscale-ruby
-  revision: 019a9cc309edafdf9d8d85d442f0e25b762733ad
+  revision: c62e3c83c55b5d4d39fc755446e0c86d0cf82c07
   branch: main
   glob: judoscale-rails/*.gemspec
   specs:
-    judoscale-rails (1.5.0)
-      judoscale-ruby (= 1.5.0)
+    judoscale-rails (1.5.2)
+      judoscale-ruby (= 1.5.2)
       railties
 
 GIT
   remote: https://github.com/judoscale/judoscale-ruby
-  revision: 019a9cc309edafdf9d8d85d442f0e25b762733ad
+  revision: c62e3c83c55b5d4d39fc755446e0c86d0cf82c07
   branch: main
   glob: judoscale-ruby/*.gemspec
   specs:
-    judoscale-ruby (1.5.0)
+    judoscale-ruby (1.5.2)
 
 GIT
   remote: https://github.com/judoscale/judoscale-ruby
-  revision: 019a9cc309edafdf9d8d85d442f0e25b762733ad
+  revision: c62e3c83c55b5d4d39fc755446e0c86d0cf82c07
   branch: main
   glob: judoscale-sidekiq/*.gemspec
   specs:
-    judoscale-sidekiq (1.5.0)
-      judoscale-ruby (= 1.5.0)
+    judoscale-sidekiq (1.5.2)
+      judoscale-ruby (= 1.5.2)
       sidekiq (>= 5.0)
 
 GEM
@@ -139,9 +139,9 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.9)
-    nokogiri (1.15.3-arm64-darwin)
+    nokogiri (1.15.4-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.15.3-x86_64-linux)
+    nokogiri (1.15.4-x86_64-linux)
       racc (~> 1.4)
     propshaft (0.7.0)
       actionpack (>= 7.0.0)
@@ -168,7 +168,7 @@ GEM
       activesupport (= 7.0.6)
       bundler (>= 1.15.0)
       railties (= 7.0.6)
-    rails-dom-testing (2.1.1)
+    rails-dom-testing (2.2.0)
       activesupport (>= 5.0.0)
       minitest
       nokogiri (>= 1.6)
@@ -208,7 +208,7 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.6.10)
+    zeitwerk (2.6.11)
 
 PLATFORMS
   arm64-darwin-22
