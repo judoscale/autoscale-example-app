@@ -1,7 +1,7 @@
 require 'uri'
 
-if defined?(JudoScale)
-  JudoScale.configure do |config|
+if defined?(Judoscale)
+  Judoscale.configure do |config|
     if (host = ENV["JUDOSCALE_HOST"])
       # Send reports to a custom host for testing
       original_url = ENV["JUDOSCALE_URL"] || "https://adapter.judoscale.com/api"
