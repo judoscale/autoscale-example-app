@@ -183,15 +183,13 @@ GEM
       thor (~> 1.0)
       zeitwerk (~> 2.5)
     rake (13.0.6)
-    redis-client (0.15.0)
-      connection_pool
+    redis (4.8.1)
     reline (0.3.7)
       io-console (~> 0.5)
-    sidekiq (7.1.2)
-      concurrent-ruby (< 2)
-      connection_pool (>= 2.3.0)
-      rack (>= 2.2.4)
-      redis-client (>= 0.14.0)
+    sidekiq (6.5.9)
+      connection_pool (>= 2.2.5, < 3)
+      rack (~> 2.0)
+      redis (>= 4.5.0, < 5)
     tailwindcss-rails (2.0.30-arm64-darwin)
       railties (>= 6.0.0)
     tailwindcss-rails (2.0.30-x86_64-linux)
@@ -224,7 +222,7 @@ DEPENDENCIES
   propshaft
   puma (~> 5.0)
   rails (~> 7.0)
-  sidekiq
+  sidekiq (~> 6.0)
   tailwindcss-rails
   tzinfo-data
   web-console
