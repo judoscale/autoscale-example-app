@@ -7,22 +7,40 @@
   </p>
 
   <p>
-    Use the form below to reload this page with a configurable processing time.
-    Submit the form with cmd-tab (or ctrl-tab) to fire a bunch of requests in succession.
+    Use the form below to trigger requests with a configurable processing time.
     Depending on your server capacity, you should start to see a slow-down due to
     request queueing. If you’ve configured autoscaling, this should trigger an upscale.
   </p>
 </div>
 
-<%= form_with model: @manager, url: false, method: :get do |form| %>
-  <div class="border-t pt-12 space-y-10">
-    <%= form.field do %>
-      <%= form.label "How long do you want the request to take?" %>
+<div class="border-t pt-12" x-data="requestHandler">
+  <%= form_with model: @manager, url: false, method: :get, html: {"x-bind" => "form"} do |form| %>
+    <div class="space-y-10">
+      <table class="divide-y divide-gray-300">
+        <tbody>
+          <tr>
+            <td class="whitespace-nowrap py-1 text-sm font-semibold text-gray-900">Pending requests:</td>
+            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="pending"></td>
+          </tr>
+          <tr>
+            <td class="whitespace-nowrap py-1 text-sm font-semibold text-gray-900">Completed requests:</td>
+            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="completedCount"></td>
+          </tr>
+          <tr>
+            <td class="whitespace-nowrap py-1 text-sm font-semibold text-gray-900">Avg response time:</td>
+            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="avgTiming"></td>
+          </tr>
+        </tbody>
+      </table>
 
-      <% latency_opts = { 1000 => "1 sec", 5000 => "5 sec", 10_000 => "10 sec", 25_000 => "25 sec" } %>
-      <%= form.radio_buttons :latency, latency_opts %>
-    <% end %>
+      <%= form.field do %>
+        <%= form.label "How long do you want each request to take?" %>
 
-    <%= form.button_row "Send request" %>
-  </div>
-<% end %>
+        <% latency_opts = { 1000 => "1 sec", 5000 => "5 sec", 10_000 => "10 sec", 25_000 => "25 sec" } %>
+        <%= form.radio_buttons :latency, latency_opts %>
+      <% end %>
+
+      <%= form.button_row "Send request" %>
+    </div>
+  <% end %>
+</div>
