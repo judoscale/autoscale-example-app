@@ -33,13 +33,3 @@ RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
 CMD ["./bin/rails", "server"]
-
-#### BUILD AND DEPLOY COMMAND SEQUENCE
-#$>
-#$> docker build --platform=linux/arm64 -t autoscale-example-ruby-app .
-#$>
-#$> docker tag autoscale-example-ruby-app:latest 171135638599.dkr.ecr.us-east-2.amazonaws.com/autoscale-example-ruby-app:latest
-#$>
-#$> aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 171135638599.dkr.ecr.us-east-2.amazonaws.com
-#$>
-#$> docker push 171135638599.dkr.ecr.us-east-2.amazonaws.com/autoscale-example-ruby-app:latest

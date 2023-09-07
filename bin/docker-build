@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Build and tag the docker image
+docker build --platform=linux/arm64 -t autoscale-example-ruby-app .
+docker tag autoscale-example-ruby-app:latest 171135638599.dkr.ecr.us-east-2.amazonaws.com/autoscale-example-ruby-app:latest
