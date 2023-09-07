@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Push the local docker image to ECR
+aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 171135638599.dkr.ecr.us-east-2.amazonaws.com
+docker push 171135638599.dkr.ecr.us-east-2.amazonaws.com/autoscale-example-ruby-app:latest
