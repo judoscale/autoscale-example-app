@@ -1,17 +1,24 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 
 import Alpine from "alpinejs";
+
 window.Alpine = Alpine;
 
-Alpine.data("requestHandler", () => ({
+Alpine.data("requestInterceptor", () => ({
   pending: 0,
   timings: [],
 
-  get completedCount() {
+  get completed() {
     return this.timings.length;
   },
 
-  get avgTiming() {
+  get lastResponseTime() {
+    if (this.timings.length === 0) return "";
+
+    return `${this.timings[this.timings.length - 1]}ms`;
+  },
+
+  get avgResponseTime() {
     if (this.timings.length === 0) return "";
 
     const sum = this.timings.reduce((acc, t) => acc + t, 0);
@@ -19,18 +26,17 @@ Alpine.data("requestHandler", () => ({
   },
 
   form: {
-    ["@submit"](e) {
-      e.preventDefault();
-
-      // Clear the timings if this is the first in a series of requests
+    ["@submit"](event) {
       if (this.pending === 0) this.timings = [];
 
       this.pending += 1;
-      let time = new Date();
+      event.preventDefault();
 
-      makeRequest(e.target, () => {
+      const start = new Date();
+
+      makeRequest(event.target, () => {
         this.pending -= 1;
-        this.timings.push(new Date() - time);
+        this.timings.push(new Date() - start);
       });
     },
   },
@@ -39,8 +45,9 @@ Alpine.data("requestHandler", () => ({
 Alpine.start();
 
 function makeRequest(form, onComplete) {
-  let formData = new FormData(form);
-  let params = new URLSearchParams(formData).toString();
+  const formData = new FormData(form);
+  const params = new URLSearchParams(formData).toString();
+  const url = `${form.action}?${params}`;
 
-  fetch(`${form.action}?${params}`).then(onComplete);
+  fetch(url).then(onComplete);
 }
