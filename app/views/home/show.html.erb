@@ -13,8 +13,8 @@
   </p>
 </div>
 
-<div class="border-t pt-12" x-data="requestHandler">
-  <%= form_with model: @manager, url: false, method: :get, html: {"x-bind" => "form"} do |form| %>
+<div class="border-t pt-12" x-data="requestInterceptor">
+  <%= form_with model: @manager, url: false, method: :get, html: {"@submit.prevent"=> "handleSubmit"} do |form| %>
     <div class="space-y-10">
       <table class="divide-y divide-gray-300">
         <tbody>
@@ -24,11 +24,15 @@
           </tr>
           <tr>
             <td class="whitespace-nowrap py-1 text-sm font-semibold text-gray-900">Completed requests:</td>
-            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="completedCount"></td>
+            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="completed"></td>
+          </tr>
+          <tr>
+            <td class="whitespace-nowrap py-1 text-sm font-semibold text-gray-900">Last response time:</td>
+            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="lastResponseTime"></td>
           </tr>
           <tr>
             <td class="whitespace-nowrap py-1 text-sm font-semibold text-gray-900">Avg response time:</td>
-            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="avgTiming"></td>
+            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="avgResponseTime"></td>
           </tr>
         </tbody>
       </table>

@@ -6,6 +6,8 @@ A tiny Rails app (from the folks at [Judoscale](https://judoscale.com)) for test
 
 The only way to see an autoscaler in action is to force your app to hit its current server capacity. This app makes it easy by specifying how long you want requests and jobs to take.
 
+![demo](public/demo.gif)
+
 ## How do I use it?
 
 First, you deploy your own instance. Use one of the buttons below to deploy.
