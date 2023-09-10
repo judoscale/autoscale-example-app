@@ -25,20 +25,17 @@ Alpine.data("requestInterceptor", () => ({
     return `${Math.round(sum / this.timings.length)}ms`;
   },
 
-  form: {
-    ["@submit"](event) {
-      if (this.pending === 0) this.timings = [];
+  handleSubmit(event) {
+    if (this.pending === 0) this.timings = [];
 
-      this.pending += 1;
-      event.preventDefault();
+    this.pending += 1;
 
-      const start = new Date();
+    const start = new Date();
 
-      makeRequest(event.target, () => {
-        this.pending -= 1;
-        this.timings.push(new Date() - start);
-      });
-    },
+    makeRequest(event.target, () => {
+      this.pending -= 1;
+      this.timings.push(new Date() - start);
+    });
   },
 }));
 

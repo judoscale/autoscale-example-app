@@ -14,7 +14,7 @@
 </div>
 
 <div class="border-t pt-12" x-data="requestInterceptor">
-  <%= form_with model: @manager, url: false, method: :get, html: {"x-bind" => "form"} do |form| %>
+  <%= form_with model: @manager, url: false, method: :get, html: {"@submit.prevent"=> "handleSubmit"} do |form| %>
     <div class="space-y-10">
       <table class="divide-y divide-gray-300">
         <tbody>
