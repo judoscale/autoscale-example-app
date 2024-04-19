@@ -18,6 +18,8 @@ First, you deploy your own instance. Use one of the buttons below to deploy.
 
 Once deployed, just open the app in a browser and follow the instructions.
 
+_Note that if you're going to make code changes (such as installing a Judoscale gem), you'll want to follow the instructions below._
+
 ## How do I make changes?
 
 If you only want to make _configuration changes_ to your deployment, you can use the deploy buttons here without creating your own repo. Just tweak the environment variables in Heroku or Render.
