@@ -41,6 +41,8 @@
           <div class="mx-auto max-w-3xl sm:px-6 lg:px-8 space-y-12">
             <%= yield %>
           </div>
+
+          <%= debug request.headers.to_h %>
         </main>
       </div>
     </div>
