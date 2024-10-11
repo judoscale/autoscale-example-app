@@ -77,6 +77,8 @@ GEM
     debug (1.8.0)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
+    dockerfile-rails (1.6.22)
+      rails (>= 3.0.0)
     erubi (1.12.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
@@ -111,6 +113,8 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.9)
+    nokogiri (1.15.3-aarch64-linux)
+      racc (~> 1.4)
     nokogiri (1.15.3-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.15.3-x86_64-linux)
@@ -162,6 +166,8 @@ GEM
       connection_pool (>= 2.2.5, < 3)
       rack (~> 2.0)
       redis (>= 4.5.0, < 5)
+    tailwindcss-rails (2.0.30-aarch64-linux)
+      railties (>= 6.0.0)
     tailwindcss-rails (2.0.30-arm64-darwin)
       railties (>= 6.0.0)
     tailwindcss-rails (2.0.30-x86_64-linux)
@@ -181,12 +187,15 @@ GEM
     zeitwerk (2.6.10)
 
 PLATFORMS
+  aarch64-linux
   arm64-darwin-22
+  arm64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
   bootsnap
   debug
+  dockerfile-rails (>= 1.6)
   importmap-rails
   propshaft
   puma (~> 5.0)
