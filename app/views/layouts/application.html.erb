@@ -42,7 +42,7 @@
             <%= yield %>
           </div>
 
-          <%= debug request.headers.to_h %>
+          <%= debug ENV.select { |k, _| k.match?(/RAILWAY/) } %>
         </main>
       </div>
     </div>
