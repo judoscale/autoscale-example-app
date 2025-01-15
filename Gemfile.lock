@@ -106,6 +106,7 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
+    mini_portile2 (2.8.8)
     minitest (5.19.0)
     msgpack (1.7.2)
     net-imap (0.3.7)
@@ -118,9 +119,8 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.9)
-    nokogiri (1.15.3-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.15.3-x86_64-linux)
+    nokogiri (1.15.3)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     propshaft (0.7.0)
       actionpack (>= 7.0.0)
@@ -190,6 +190,7 @@ GEM
 PLATFORMS
   arm64-darwin-22
   arm64-darwin-23
+  arm64-darwin-24
   x86_64-linux
 
 DEPENDENCIES
@@ -207,7 +208,7 @@ DEPENDENCIES
   web-console
 
 RUBY VERSION
-   ruby 3.2.2p53
+   ruby 3.3.5p100
 
 BUNDLED WITH
    2.4.10
