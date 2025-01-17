@@ -20,5 +20,5 @@ group :development do
   gem "web-console"
 end
 
-gem "judoscale-rails", "~> 1.8.0", github: "judoscale/judoscale-ruby"
-gem "judoscale-sidekiq", "~> 1.8.0", github: "judoscale/judoscale-ruby"
+gem "judoscale-rails", "~> 1.9.0"
+gem "judoscale-sidekiq", "~> 1.9.0"

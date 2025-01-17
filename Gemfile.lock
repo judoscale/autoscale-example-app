@@ -1,15 +1,3 @@
-GIT
-  remote: https://github.com/judoscale/judoscale-ruby.git
-  revision: bbcebf41aab4893d30cb1363cd609cde5bc57e9a
-  specs:
-    judoscale-rails (1.8.3)
-      judoscale-ruby (= 1.8.3)
-      railties
-    judoscale-ruby (1.8.3)
-    judoscale-sidekiq (1.8.3)
-      judoscale-ruby (= 1.8.3)
-      sidekiq (>= 5.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -100,6 +88,13 @@ GEM
     io-console (0.6.0)
     irb (1.7.4)
       reline (>= 0.3.6)
+    judoscale-rails (1.9.0)
+      judoscale-ruby (= 1.9.0)
+      railties
+    judoscale-ruby (1.9.0)
+    judoscale-sidekiq (1.9.0)
+      judoscale-ruby (= 1.9.0)
+      sidekiq (>= 5.0)
     loofah (2.21.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -202,8 +197,8 @@ DEPENDENCIES
   bootsnap
   debug
   importmap-rails
-  judoscale-rails (~> 1.8.0)!
-  judoscale-sidekiq (~> 1.8.0)!
+  judoscale-rails (~> 1.9.0)
+  judoscale-sidekiq (~> 1.9.0)
   propshaft
   puma (~> 5.0)
   rails (~> 7.0)
@@ -216,4 +211,4 @@ RUBY VERSION
    ruby 3.3.5p100
 
 BUNDLED WITH
-   2.4.10
+   2.5.21
