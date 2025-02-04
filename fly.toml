@@ -4,7 +4,7 @@
 #
 
 app = 'autoscale-example-app'
-primary_region = 'gru'
+primary_region = 'iad'
 console_command = '/rails/bin/rails console'
 
 [build]
