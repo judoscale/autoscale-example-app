@@ -25,3 +25,5 @@ end
 group :development do
   gem "web-console"
 end
+
+gem "dockerfile-rails", ">= 1.7", :group => :development
