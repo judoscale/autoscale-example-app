@@ -9,9 +9,9 @@ console_command = '/rails/bin/rails console'
 
 [build]
 
-[[mounts]]
-  source = 'data'
-  destination = '/data'
+# [[mounts]]
+#   source = 'data'
+#   destination = '/data'
 
 [processes]
   web = 'bundle exec rails server'
