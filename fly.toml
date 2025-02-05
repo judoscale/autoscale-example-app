@@ -13,13 +13,17 @@ console_command = '/rails/bin/rails console'
   source = 'data'
   destination = '/data'
 
+[processes]
+  web = 'bundle exec rails server'
+  worker = 'sh -c "RAILS_MAX_THREADS=${WORKER_THREADS:-1} bundle exec sidekiq -q urgent -q default"'
+
 [http_service]
   internal_port = 3000
   force_https = true
   auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
-  processes = ['app']
+  processes = ['web']
 
 [[vm]]
   size = 'shared-cpu-1x'
