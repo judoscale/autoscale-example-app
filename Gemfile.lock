@@ -88,6 +88,8 @@ GEM
     debug (1.8.0)
       irb (>= 1.5.0)
       reline (>= 0.3.1)
+    dockerfile-rails (1.7.5)
+      rails (>= 3.0.0)
     drb (2.2.3)
     erubi (1.12.0)
     fiddle (1.1.6)
@@ -212,6 +214,7 @@ DEPENDENCIES
   bigdecimal
   bootsnap
   debug
+  dockerfile-rails (>= 1.7)
   fiddle
   importmap-rails
   logger

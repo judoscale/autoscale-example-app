@@ -1,0 +1,25 @@
+# fly.toml app configuration file generated for autoscale-example-app on 2025-02-05T11:25:15-03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'autoscale-example-app'
+primary_region = 'iad'
+console_command = '/rails/bin/rails console'
+
+[build]
+
+[[mounts]]
+  source = 'data'
+  destination = '/data'
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  size = 'shared-cpu-1x'
