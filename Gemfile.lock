@@ -66,6 +66,8 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    base64 (0.2.0)
+    bigdecimal (3.1.9)
     bindex (0.8.1)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
@@ -78,6 +80,7 @@ GEM
       irb (>= 1.5.0)
       reline (>= 0.3.1)
     erubi (1.12.0)
+    fiddle (1.1.6)
     globalid (1.1.0)
       activesupport (>= 5.0)
     i18n (1.14.1)
@@ -88,6 +91,7 @@ GEM
     io-console (0.6.0)
     irb (1.7.4)
       reline (>= 0.3.6)
+    logger (1.6.6)
     loofah (2.21.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -102,6 +106,7 @@ GEM
     mini_portile2 (2.8.8)
     minitest (5.19.0)
     msgpack (1.7.2)
+    mutex_m (0.3.0)
     net-imap (0.3.7)
       date
       net-protocol
@@ -115,6 +120,7 @@ GEM
     nokogiri (1.15.3)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
+    ostruct (0.6.1)
     propshaft (0.7.0)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
@@ -190,9 +196,15 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  base64
+  bigdecimal
   bootsnap
   debug
+  fiddle
   importmap-rails
+  logger
+  mutex_m
+  ostruct
   propshaft
   puma (~> 5.0)
   rails (~> 7.0)
