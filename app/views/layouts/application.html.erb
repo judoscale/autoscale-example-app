@@ -42,6 +42,8 @@
             <%= yield %>
           </div>
         </main>
+
+        <%= debug request.headers.to_h if ENV["DEBUG_HEADERS"].present? %>
       </div>
     </div>
   </body>
