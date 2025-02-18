@@ -43,7 +43,17 @@
           </div>
         </main>
 
-        <%= debug request.headers.to_h if ENV["DEBUG_HEADERS"].present? %>
+        <% if ENV["DEBUG_HEADERS"].present? %>
+          <p>
+            <%=
+              current = Time.current.to_s
+              req_start = request.headers["HTTP_X_REQUEST_START"]
+              queue_time = request.env["judoscale.queue_time"]
+              debug({"x-request-start": req_start, current: current, queue_time: queue_time})
+            %>
+            <%= debug request.headers.to_h %>
+          </p>
+        <% end %>
       </div>
     </div>
   </body>
