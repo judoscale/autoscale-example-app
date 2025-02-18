@@ -15,7 +15,11 @@ worker_timeout 3600 if ENV.fetch("RAILS_ENV", "development") == "development"
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
-port ENV.fetch("PORT") { 3000 }
+# port ENV.fetch("PORT") { 3000 }
+# binding the server to the IPv6 unspecified address :: rather than the IPv4 any address
+# as advised by Heroku support for Heroku Fir
+port ENV.fetch("PORT", 3000), "::"
+
 
 # Specifies the `environment` that Puma will run in.
 #
