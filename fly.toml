@@ -27,3 +27,6 @@ console_command = '/rails/bin/rails console'
 
 [[vm]]
   size = 'shared-cpu-1x'
+
+[env]
+  RAILS_ENV = 'production'
