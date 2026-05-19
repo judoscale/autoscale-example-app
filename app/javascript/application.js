@@ -53,12 +53,13 @@ Alpine.data("requestInterceptor", () => ({
     return `${Math.round(sum / available.length)}ms`;
   },
 
-  get lastRequestStart() {
+  get lastRequestStartTitle() {
     if (this.requestStarts.length === 0) return "";
 
-    return this.formatUnavailable(
-      this.requestStarts[this.requestStarts.length - 1],
-    );
+    const value = this.requestStarts[this.requestStarts.length - 1];
+    if (value === null) return "X-Request-Start: unavailable";
+
+    return `X-Request-Start: ${value}`;
   },
 
   handleSubmit(event) {

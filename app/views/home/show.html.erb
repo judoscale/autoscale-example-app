@@ -14,40 +14,65 @@
 </div>
 
 <div class="border-t pt-12" x-data="requestInterceptor">
+  <section class="not-prose mb-12 space-y-8">
+    <div>
+      <h2 class="text-sm font-semibold text-gray-900">Requests</h2>
+      <p class="mt-1 text-sm text-gray-500">In-flight and finished request counts.</p>
+
+      <div class="mt-4 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500 sm:pl-6">Pending</th>
+              <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500 sm:pr-6">Completed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900 sm:pl-6" x-text="pending"></td>
+              <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900 sm:pr-6" x-text="completed"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="text-sm font-semibold text-gray-900">Metrics</h2>
+      <p class="mt-1 text-sm text-gray-500">Response and queue times from completed requests. Hover last queue time for X-Request-Start.</p>
+
+      <div class="mt-4 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 sm:pl-6"></th>
+              <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Last</th>
+              <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500 sm:pr-6">Average</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <tr>
+              <th scope="row" class="py-4 pl-4 pr-3 text-left text-sm font-normal text-gray-700 sm:pl-6">Response time</th>
+              <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900" x-text="lastResponseTime"></td>
+              <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900 sm:pr-6" x-text="avgResponseTime"></td>
+            </tr>
+            <tr>
+              <th scope="row" class="py-4 pl-4 pr-3 text-left text-sm font-normal text-gray-700 sm:pl-6">Queue time</th>
+              <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900" :title="lastRequestStartTitle" x-text="lastQueueTime"></td>
+              <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900 sm:pr-6" x-text="avgQueueTime"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <%= form_with model: @manager, url: false, method: :get, html: {"@submit.prevent"=> "handleSubmit"} do |form| %>
-    <div class="space-y-10">
-      <table class="divide-y divide-gray-300">
-        <tbody>
-          <tr>
-            <td class="whitespace-nowrap py-1 text-sm font-semibold text-gray-900">Pending requests:</td>
-            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="pending"></td>
-          </tr>
-          <tr>
-            <td class="whitespace-nowrap py-1 text-sm font-semibold text-gray-900">Completed requests:</td>
-            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="completed"></td>
-          </tr>
-          <tr>
-            <td class="whitespace-nowrap py-1 text-sm font-semibold text-gray-900">Last response time:</td>
-            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="lastResponseTime"></td>
-          </tr>
-          <tr>
-            <td class="whitespace-nowrap py-1 text-sm font-semibold text-gray-900">Avg response time:</td>
-            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="avgResponseTime"></td>
-          </tr>
-          <tr>
-            <td class="whitespace-nowrap py-1 text-sm font-semibold text-gray-900">Last request queue time:</td>
-            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="lastQueueTime"></td>
-          </tr>
-          <tr>
-            <td class="whitespace-nowrap py-1 text-sm font-semibold text-gray-900">Avg request queue time:</td>
-            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="avgQueueTime"></td>
-          </tr>
-          <tr>
-            <td class="whitespace-nowrap py-1 text-sm font-semibold text-gray-900">X-Request-Start:</td>
-            <td class="whitespace-nowrap pl-4 py-1 text-sm text-gray-500" x-text="lastRequestStart"></td>
-          </tr>
-        </tbody>
-      </table>
+    <section class="space-y-8 border-t border-gray-200 pt-10">
+      <div>
+        <h2 class="text-sm font-semibold text-gray-900">Send a request</h2>
+        <p class="mt-1 text-sm text-gray-500">Choose how long the server should sleep before responding.</p>
+      </div>
 
       <%= form.field do %>
         <%= form.label "How long do you want each request to take?" %>
@@ -57,6 +82,6 @@
       <% end %>
 
       <%= form.button_row "Send request" %>
-    </div>
+    </section>
   <% end %>
 </div>
