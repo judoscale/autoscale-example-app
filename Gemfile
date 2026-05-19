@@ -7,7 +7,7 @@ gem "rails", "~> 7.0.0"
 gem "propshaft"
 gem "puma", "~> 5.0"
 gem "importmap-rails"
-gem "tailwindcss-rails", "~> 3.0"
+gem "tailwindcss-rails", "~> 3.3", ">= 3.3.1"
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
 gem "sidekiq", "~> 6.0"
