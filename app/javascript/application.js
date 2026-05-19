@@ -7,6 +7,8 @@ window.Alpine = Alpine;
 Alpine.data("requestInterceptor", () => ({
   pending: 0,
   timings: [],
+  queueTimings: [],
+  requestStarts: [],
 
   get completed() {
     return this.timings.length;
@@ -25,16 +27,56 @@ Alpine.data("requestInterceptor", () => ({
     return `${Math.round(sum / this.timings.length)}ms`;
   },
 
+  formatUnavailable(value, suffix = "") {
+    return value === null ? "unavailable" : `${value}${suffix}`;
+  },
+
+  formatQueueTime(value) {
+    return this.formatUnavailable(value, "ms");
+  },
+
+  get lastQueueTime() {
+    if (this.queueTimings.length === 0) return "";
+
+    return this.formatQueueTime(
+      this.queueTimings[this.queueTimings.length - 1],
+    );
+  },
+
+  get avgQueueTime() {
+    if (this.queueTimings.length === 0) return "";
+
+    const available = this.queueTimings.filter((t) => t !== null);
+    if (available.length === 0) return "unavailable";
+
+    const sum = available.reduce((acc, t) => acc + t, 0);
+    return `${Math.round(sum / available.length)}ms`;
+  },
+
+  get lastRequestStart() {
+    if (this.requestStarts.length === 0) return "";
+
+    return this.formatUnavailable(
+      this.requestStarts[this.requestStarts.length - 1],
+    );
+  },
+
   handleSubmit(event) {
-    if (this.pending === 0) this.timings = [];
+    if (this.pending === 0) {
+      this.timings = [];
+      this.queueTimings = [];
+      this.requestStarts = [];
+    }
 
     this.pending += 1;
 
     const start = new Date();
 
-    makeRequest(event.target, () => {
+    makeRequest(event.target, ({ queueTime, requestStart }) => {
       this.pending -= 1;
       this.timings.push(new Date() - start);
+      this.queueTimings.push(queueTime);
+      this.requestStarts.push(requestStart);
     });
   },
 }));
@@ -46,5 +88,22 @@ function makeRequest(form, onComplete) {
   const params = new URLSearchParams(formData).toString();
   const url = `${form.action}?${params}`;
 
-  fetch(url).then(onComplete);
+  fetch(url).then((response) => {
+    const queueHeader = response.headers.get("X-Queue-Time");
+    const queueTime =
+      queueHeader === null || queueHeader === ""
+        ? null
+        : Number.parseInt(queueHeader, 10);
+
+    const requestStartHeader = response.headers.get("X-Request-Start");
+    const requestStart =
+      requestStartHeader === null || requestStartHeader === ""
+        ? null
+        : requestStartHeader;
+
+    onComplete({
+      queueTime: Number.isNaN(queueTime) ? null : queueTime,
+      requestStart,
+    });
+  });
 }
