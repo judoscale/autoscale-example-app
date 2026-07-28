@@ -4,6 +4,15 @@ class JobsController < ApplicationController
   def new
     @manager = JobManager.new(params[:job_manager] && job_manager_params)
     @queues = Sidekiq::Queue.all
+
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: @queues.map { |queue|
+          {name: queue.name, size: queue.size, latency: queue.latency.round(2)}
+        }
+      end
+    end
   end
 
   def create

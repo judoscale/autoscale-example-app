@@ -4,6 +4,59 @@ import Alpine from "alpinejs";
 
 window.Alpine = Alpine;
 
+Alpine.data("queuePoller", (url, initialQueues) => ({
+  polling: true,
+  queues: initialQueues,
+  intervalId: null,
+
+  init() {
+    this.startPolling();
+  },
+
+  destroy() {
+    this.clearTimer();
+  },
+
+  get toggleLabel() {
+    return this.polling ? "Stop polling" : "Start polling";
+  },
+
+  toggle() {
+    if (this.polling) {
+      this.stopPolling();
+    } else {
+      this.startPolling({ immediate: true });
+    }
+  },
+
+  startPolling({ immediate = false } = {}) {
+    this.polling = true;
+    this.clearTimer();
+    if (immediate) this.poll();
+    this.intervalId = setInterval(() => this.poll(), 2000);
+  },
+
+  stopPolling() {
+    this.polling = false;
+    this.clearTimer();
+  },
+
+  clearTimer() {
+    if (this.intervalId !== null) {
+      clearInterval(this.intervalId);
+      this.intervalId = null;
+    }
+  },
+
+  poll() {
+    fetch(url, { headers: { Accept: "application/json" } })
+      .then((response) => response.json())
+      .then((queues) => {
+        this.queues = queues;
+      });
+  },
+}));
+
 Alpine.data("requestInterceptor", () => ({
   pending: 0,
   timings: [],
