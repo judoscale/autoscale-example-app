@@ -1,10 +1,6 @@
-<%
-  queue_data = @queues.map { |queue| { name: queue.name, size: queue.size, latency: queue.latency.round(2) } }
-%>
-
 <div
   class="prose max-w-none"
-  x-data='queuePoller(<%= new_job_path(format: :json).to_json %>, <%= queue_data.to_json %>)'
+  x-data='queuePoller(<%= new_job_path(format: :json).to_json %>, <%= @queues.to_json %>)'
 >
   <p>
     Use this form to enqueue jobs and trigger worker autoscaling.
@@ -30,7 +26,8 @@
         <thead class="bg-gray-50">
           <tr>
             <th scope="col" class="py-3 pl-4 pr-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 sm:pl-6">Queue</th>
-            <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Pending Jobs</th>
+            <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Pending</th>
+            <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Busy</th>
             <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500 sm:pr-6">Latency</th>
           </tr>
         </thead>
@@ -38,7 +35,7 @@
         <tbody class="divide-y divide-gray-200">
           <template x-if="queues.length === 0">
             <tr>
-              <td colspan="3" class="px-4 py-4 text-sm italic text-gray-500 sm:px-6">
+              <td colspan="4" class="px-4 py-4 text-sm italic text-gray-500 sm:px-6">
                 There are no Sidekiq queues yet. Enqueue some jobs to create a queue.
               </td>
             </tr>
@@ -47,8 +44,9 @@
           <template x-for="queue in queues" :key="queue.name">
             <tr>
               <td class="whitespace-nowrap py-4 pl-4 pr-3 text-left text-sm font-normal text-gray-700 sm:pl-6" x-text="queue.name"></td>
-              <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900" x-text="`${queue.size} jobs`"></td>
-              <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900 sm:pr-6" x-text="`${queue.latency} seconds`"></td>
+              <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900" x-text="queue.size"></td>
+              <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900" x-text="queue.busy"></td>
+              <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900 sm:pr-6" x-text="`${queue.latency}s`"></td>
             </tr>
           </template>
         </tbody>
