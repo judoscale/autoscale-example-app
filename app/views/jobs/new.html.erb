@@ -8,17 +8,15 @@
   </p>
 
   <div class="not-prose mt-8">
-    <div class="flex items-start justify-between gap-4">
-      <div>
-        <h2 class="text-sm font-semibold text-gray-900">Queues</h2>
-        <p class="mt-1 text-sm text-gray-500">Current Sidekiq queue depth and latency.</p>
-      </div>
-      <a
-        href="#"
-        class="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-        @click.prevent="toggle()"
-        x-text="toggleLabel"
-      ></a>
+    <div>
+      <h2 class="text-sm font-semibold text-gray-900">
+        Queues
+        <span class="font-normal text-gray-500">
+          (auto-refresh
+          <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500" @click.prevent="toggle()" x-text="polling ? 'on' : 'off'"></a>)
+        </span>
+      </h2>
+      <p class="mt-1 text-sm text-gray-500">Current Sidekiq queue depth and latency.</p>
     </div>
 
     <div class="mt-4 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">

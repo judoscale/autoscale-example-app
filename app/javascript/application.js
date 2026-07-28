@@ -17,10 +17,6 @@ Alpine.data("queuePoller", (url, initialQueues) => ({
     this.clearTimer();
   },
 
-  get toggleLabel() {
-    return this.polling ? "Stop polling" : "Start polling";
-  },
-
   toggle() {
     if (this.polling) {
       this.stopPolling();
@@ -33,7 +29,7 @@ Alpine.data("queuePoller", (url, initialQueues) => ({
     this.polling = true;
     this.clearTimer();
     if (immediate) this.poll();
-    this.intervalId = setInterval(() => this.poll(), 2000);
+    this.intervalId = setInterval(() => this.poll(), 1000);
   },
 
   stopPolling() {
