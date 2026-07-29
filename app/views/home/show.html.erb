@@ -1,19 +1,12 @@
-<% @title = "Autoscale Sample App" %>
-
-<div class="prose max-w-none">
-  <p>
-    Hey! We’re <a href="https://judoscale.com" target="_blank">Judoscale</a>.
-    We built this tiny Rails app for testing autoscalers.
-  </p>
-
+<div class="prose max-w-none mb-12">
   <p>
     Use the form below to trigger requests with a configurable processing time.
-    Depending on your server capacity, you should start to see a slow-down due to
-    request queueing. If you’ve configured autoscaling, this should trigger an upscale.
+    Under load you should see request queueing, which can trigger an upscale if
+    autoscaling is configured.
   </p>
 </div>
 
-<div class="border-t pt-12" x-data="requestInterceptor">
+<div x-data="requestInterceptor">
   <section class="not-prose mb-12 space-y-8">
     <div>
       <h2 class="text-sm font-semibold text-gray-900">Requests</h2>

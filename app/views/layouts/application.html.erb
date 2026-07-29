@@ -16,7 +16,7 @@
       <div class="my-4 mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div class="border-b border-gray-200">
           <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-            <% links = { "Home" => root_path, "Jobs" => new_job_path } %>
+            <% links = { "Requests" => root_path, "Jobs" => new_job_path } %>
             <% links.each do |name, path| %>
               <% link_class = current_page?(path) ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' %>
               <% link_class += ' whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium' %>
