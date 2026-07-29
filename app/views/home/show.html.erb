@@ -62,7 +62,7 @@
     </div>
   </section>
 
-  <%= form_with model: @manager, url: false, method: :get, html: {"@submit.prevent"=> "handleSubmit"} do |form| %>
+  <%= form_with model: @manager, url: false, method: :get, html: {"@submit.prevent"=> "handleSubmit", "@change"=> "onOptionsChange($event)"} do |form| %>
     <section class="space-y-8 border-t border-gray-200 pt-10">
       <div>
         <h2 class="text-sm font-semibold text-gray-900">Send requests</h2>

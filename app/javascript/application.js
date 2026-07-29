@@ -60,7 +60,8 @@ Alpine.data("requestInterceptor", () => ({
   timings: [],
   queueTimings: [],
   requestStarts: [],
-  intervalId: null,
+  form: null,
+  timeoutId: null,
 
   destroy() {
     this.clearTimer();
@@ -127,18 +128,23 @@ Alpine.data("requestInterceptor", () => ({
     this.startSending(event.target);
   },
 
+  onOptionsChange(event) {
+    if (!this.sending) return;
+    if (event.target.name !== "request_manager[rps]") return;
+
+    this.scheduleNext();
+  },
+
   startSending(form) {
     this.sending = true;
+    this.form = form;
     this.sent = 0;
     this.timings = [];
     this.queueTimings = [];
     this.requestStarts = [];
 
-    const rps = Number(new FormData(form).get("request_manager[rps]")) || 1;
-    const intervalMs = 1000 / rps;
-
-    this.sendOne(form);
-    this.intervalId = setInterval(() => this.sendOne(form), intervalMs);
+    this.sendOne();
+    this.scheduleNext();
   },
 
   stopSending() {
@@ -146,20 +152,31 @@ Alpine.data("requestInterceptor", () => ({
     this.clearTimer();
   },
 
+  scheduleNext() {
+    this.clearTimer();
+    if (!this.sending || !this.form) return;
+
+    const rps = Number(new FormData(this.form).get("request_manager[rps]")) || 1;
+    this.timeoutId = setTimeout(() => {
+      this.sendOne();
+      this.scheduleNext();
+    }, 1000 / rps);
+  },
+
   clearTimer() {
-    if (this.intervalId !== null) {
-      clearInterval(this.intervalId);
-      this.intervalId = null;
+    if (this.timeoutId !== null) {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = null;
     }
   },
 
-  sendOne(form) {
+  sendOne() {
     this.sent += 1;
     this.pending += 1;
 
     const start = new Date();
 
-    makeRequest(form, ({ queueTime, requestStart }) => {
+    makeRequest(this.form, ({ queueTime, requestStart }) => {
       this.pending -= 1;
       this.timings.push(new Date() - start);
       this.queueTimings.push(queueTime);
