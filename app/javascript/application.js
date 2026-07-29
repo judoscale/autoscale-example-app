@@ -62,6 +62,7 @@ Alpine.data("requestInterceptor", () => ({
   requestStarts: [],
   form: null,
   timeoutId: null,
+  runId: 0,
 
   destroy() {
     this.clearTimer();
@@ -136,9 +137,11 @@ Alpine.data("requestInterceptor", () => ({
   },
 
   startSending(form) {
+    this.runId += 1;
     this.sending = true;
     this.form = form;
     this.sent = 0;
+    this.pending = 0;
     this.timings = [];
     this.queueTimings = [];
     this.requestStarts = [];
@@ -171,12 +174,15 @@ Alpine.data("requestInterceptor", () => ({
   },
 
   sendOne() {
+    const runId = this.runId;
     this.sent += 1;
     this.pending += 1;
 
     const start = new Date();
 
     makeRequest(this.form, ({ queueTime, requestStart }) => {
+      if (runId !== this.runId) return;
+
       this.pending -= 1;
       this.timings.push(new Date() - start);
       this.queueTimings.push(queueTime);
