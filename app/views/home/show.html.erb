@@ -1,6 +1,6 @@
 <div class="prose max-w-none mb-12">
   <p>
-    Use the form below to trigger requests with a configurable processing time.
+    Use the form below to send requests at a configurable rate and processing time.
     Under load you should see request queueing, which can trigger an upscale if
     autoscaling is configured.
   </p>
@@ -10,19 +10,21 @@
   <section class="not-prose mb-12 space-y-8">
     <div>
       <h2 class="text-sm font-semibold text-gray-900">Requests</h2>
-      <p class="mt-1 text-sm text-gray-500">In-flight and finished request counts.</p>
+      <p class="mt-1 text-sm text-gray-500">Sent, in-flight, and finished request counts.</p>
 
       <div class="mt-4 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
-              <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500 sm:pl-6">Pending</th>
+              <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500 sm:pl-6">Sent</th>
+              <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Pending</th>
               <th scope="col" class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500 sm:pr-6">Completed</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900 sm:pl-6" x-text="pending"></td>
+              <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900 sm:pl-6" x-text="sent"></td>
+              <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900" x-text="pending"></td>
               <td class="whitespace-nowrap px-4 py-4 text-right text-sm font-medium tabular-nums text-gray-900 sm:pr-6" x-text="completed"></td>
             </tr>
           </tbody>
@@ -63,8 +65,8 @@
   <%= form_with model: @manager, url: false, method: :get, html: {"@submit.prevent"=> "handleSubmit"} do |form| %>
     <section class="space-y-8 border-t border-gray-200 pt-10">
       <div>
-        <h2 class="text-sm font-semibold text-gray-900">Send a request</h2>
-        <p class="mt-1 text-sm text-gray-500">Choose how long the server should sleep before responding.</p>
+        <h2 class="text-sm font-semibold text-gray-900">Send requests</h2>
+        <p class="mt-1 text-sm text-gray-500">Choose how long each request takes and how fast to send them.</p>
       </div>
 
       <%= form.field do %>
@@ -74,7 +76,23 @@
         <%= form.radio_buttons :latency, latency_opts %>
       <% end %>
 
-      <%= form.button_row "Send request" %>
+      <%= form.field do %>
+        <%= form.label "How many requests per second do you want to send?" %>
+
+        <% rps_opts = { 1 => "1", 3 => "3", 5 => "5", 10 => "10" } %>
+        <%= form.radio_buttons :rps, rps_opts %>
+      <% end %>
+
+      <div>
+        <button
+          type="submit"
+          class="border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+          :class="sending
+            ? 'bg-red-600 hover:bg-red-700 focus:ring-red-600'
+            : 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-600'"
+          x-text="sending ? 'Stop sending requests' : 'Start sending requests'"
+        ></button>
+      </div>
     </section>
   <% end %>
 </div>

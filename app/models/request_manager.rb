@@ -1,9 +1,13 @@
 class RequestManager
   include ActiveModel::API
-  attr_accessor :latency
+  attr_accessor :latency, :rps
 
   def latency
     @latency ||= 1000
+  end
+
+  def rps
+    @rps ||= 1
   end
 
   def sleep!
