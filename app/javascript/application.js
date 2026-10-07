@@ -53,7 +53,7 @@ Alpine.data("queuePoller", (url, initialQueues) => ({
   },
 }));
 
-Alpine.data("requestInterceptor", (initialLatency, initialSleepPercent) => ({
+Alpine.data("requestInterceptor", (initialLatency, initialSleepPercent, initialRps) => ({
   sending: false,
   sent: 0,
   pending: 0,
@@ -65,6 +65,7 @@ Alpine.data("requestInterceptor", (initialLatency, initialSleepPercent) => ({
   runId: 0,
   latency: initialLatency,
   sleepPercent: initialSleepPercent,
+  rps: initialRps,
 
   destroy() {
     this.clearTimer();
@@ -122,11 +123,23 @@ Alpine.data("requestInterceptor", (initialLatency, initialSleepPercent) => ({
     return `X-Request-Start: ${value}`;
   },
 
-  get curlCommand() {
+  get loadTestUrl() {
     const url = new URL("/", window.location.origin);
     url.searchParams.set("latency", String(this.latency));
     url.searchParams.set("sleep_percent", String(this.sleepPercent));
-    return `curl '${url.toString()}'`;
+    return url.toString();
+  },
+
+  get curlCommand() {
+    return `curl '${this.loadTestUrl}'`;
+  },
+
+  get vegetaCommand() {
+    return [
+      `echo 'GET ${this.loadTestUrl}' \\`,
+      `  | vegeta attack -rate=${this.rps} -duration=30s \\`,
+      `  | vegeta report`,
+    ].join("\n");
   },
 
   handleSubmit(event) {
@@ -153,12 +166,16 @@ Alpine.data("requestInterceptor", (initialLatency, initialSleepPercent) => ({
     const data = new FormData(form);
     const latency = data.get("request_manager[latency]");
     const sleepPercent = data.get("request_manager[sleep_percent]");
+    const rps = data.get("request_manager[rps]");
 
     if (latency != null && latency !== "") {
       this.latency = Number(latency);
     }
     if (sleepPercent != null && sleepPercent !== "") {
       this.sleepPercent = Number(sleepPercent);
+    }
+    if (rps != null && rps !== "") {
+      this.rps = Number(rps);
     }
   },
 

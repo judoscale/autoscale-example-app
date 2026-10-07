@@ -6,7 +6,7 @@
   </p>
 </div>
 
-<div x-data="requestInterceptor(<%= @manager.latency.to_i %>, <%= @manager.sleep_percent.to_i %>)">
+<div x-data="requestInterceptor(<%= @manager.latency.to_i %>, <%= @manager.sleep_percent.to_i %>, <%= @manager.rps.to_i %>)">
   <section class="not-prose mb-12 space-y-8">
     <div>
       <h2 class="text-sm font-semibold text-gray-900">Requests</h2>
@@ -101,11 +101,18 @@
         ></button>
       </div>
 
-      <aside class="rounded-md border border-sky-200 bg-sky-50 px-4 py-3">
+      <aside class="rounded-md border border-sky-200 bg-sky-50 px-4 py-3 space-y-3">
         <p class="text-sm text-sky-900">
-          Prefer the terminal? Send one request with the selected options:
+          Prefer the terminal? These use the selected latency, sleep/CPU mix, and request rate.
         </p>
-        <pre class="mt-2 overflow-x-auto rounded bg-sky-100/80 px-3 py-2 text-sm text-sky-950"><code x-text="curlCommand"></code></pre>
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wide text-sky-800">One request</p>
+          <pre class="mt-1 overflow-x-auto rounded bg-sky-100/80 px-3 py-2 text-sm text-sky-950"><code x-text="curlCommand"></code></pre>
+        </div>
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wide text-sky-800">Load test (30s)</p>
+          <pre class="mt-1 overflow-x-auto rounded bg-sky-100/80 px-3 py-2 text-sm text-sky-950"><code x-text="vegetaCommand"></code></pre>
+        </div>
       </aside>
     </section>
   <% end %>
