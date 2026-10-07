@@ -5,8 +5,8 @@ class HomeController < ApplicationController
     @manager = RequestManager.new
 
     if params[:request_manager]
-      @manager.attributes = params.require(:request_manager).permit(:latency)
-      @manager.sleep!
+      @manager.attributes = params.require(:request_manager).permit(:latency, :sleep_percent)
+      @manager.process!
     end
   end
 
