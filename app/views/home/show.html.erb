@@ -6,7 +6,7 @@
   </p>
 </div>
 
-<div x-data="requestInterceptor">
+<div x-data="requestInterceptor(<%= @manager.latency.to_i %>, <%= @manager.sleep_percent.to_i %>)">
   <section class="not-prose mb-12 space-y-8">
     <div>
       <h2 class="text-sm font-semibold text-gray-900">Requests</h2>
@@ -72,7 +72,7 @@
       <%= form.field do %>
         <%= form.label "How long do you want each request to take?" %>
 
-        <% latency_opts = { 1000 => "1 sec", 5000 => "5 sec", 10_000 => "10 sec", 25_000 => "25 sec" } %>
+        <% latency_opts = { 100 => "100 ms", 500 => "500 ms", 1000 => "1 sec", 2000 => "2 sec", 5000 => "5 sec" } %>
         <%= form.radio_buttons :latency, latency_opts %>
       <% end %>
 
@@ -100,6 +100,13 @@
           x-text="sending ? 'Stop sending requests' : 'Start sending requests'"
         ></button>
       </div>
+
+      <aside class="rounded-md border border-sky-200 bg-sky-50 px-4 py-3">
+        <p class="text-sm text-sky-900">
+          Prefer the terminal? Send one request with the selected options:
+        </p>
+        <pre class="mt-2 overflow-x-auto rounded bg-sky-100/80 px-3 py-2 text-sm text-sky-950"><code x-text="curlCommand"></code></pre>
+      </aside>
     </section>
   <% end %>
 </div>
