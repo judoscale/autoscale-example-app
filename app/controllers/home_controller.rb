@@ -3,14 +3,25 @@ class HomeController < ApplicationController
 
   def show
     @manager = RequestManager.new
+    attrs = request_manager_attrs
+    @manager.attributes = attrs if attrs.any?
 
-    if params[:request_manager]
-      @manager.attributes = params.require(:request_manager).permit(:latency, :sleep_percent)
+    if attrs.key?("latency") || attrs.key?("sleep_percent")
       @manager.process!
     end
   end
 
   private
+
+  def request_manager_attrs
+    raw = if params[:request_manager].present?
+      params.require(:request_manager).permit(:latency, :sleep_percent, :rps)
+    else
+      params.permit(:latency, :sleep_percent, :rps)
+    end
+
+    raw.to_h.compact_blank
+  end
 
   def expose_request_metrics
     if (queue_time = request.env["judoscale.queue_time"])
