@@ -53,7 +53,7 @@ Alpine.data("queuePoller", (url, initialQueues) => ({
   },
 }));
 
-Alpine.data("requestInterceptor", () => ({
+Alpine.data("requestInterceptor", (initialLatency, initialSleepPercent) => ({
   sending: false,
   sent: 0,
   pending: 0,
@@ -63,6 +63,8 @@ Alpine.data("requestInterceptor", () => ({
   form: null,
   timeoutId: null,
   runId: 0,
+  latency: initialLatency,
+  sleepPercent: initialSleepPercent,
 
   destroy() {
     this.clearTimer();
@@ -120,6 +122,13 @@ Alpine.data("requestInterceptor", () => ({
     return `X-Request-Start: ${value}`;
   },
 
+  get curlCommand() {
+    const url = new URL("/", window.location.origin);
+    url.searchParams.set("latency", String(this.latency));
+    url.searchParams.set("sleep_percent", String(this.sleepPercent));
+    return `curl '${url.toString()}'`;
+  },
+
   handleSubmit(event) {
     if (this.sending) {
       this.stopSending();
@@ -130,10 +139,27 @@ Alpine.data("requestInterceptor", () => ({
   },
 
   onOptionsChange(event) {
+    this.syncOptionsFromForm(event.target.form);
+
     if (!this.sending) return;
     if (event.target.name !== "request_manager[rps]") return;
 
     this.scheduleNext();
+  },
+
+  syncOptionsFromForm(form) {
+    if (!form) return;
+
+    const data = new FormData(form);
+    const latency = data.get("request_manager[latency]");
+    const sleepPercent = data.get("request_manager[sleep_percent]");
+
+    if (latency != null && latency !== "") {
+      this.latency = Number(latency);
+    }
+    if (sleepPercent != null && sleepPercent !== "") {
+      this.sleepPercent = Number(sleepPercent);
+    }
   },
 
   startSending(form) {
@@ -145,6 +171,7 @@ Alpine.data("requestInterceptor", () => ({
     this.timings = [];
     this.queueTimings = [];
     this.requestStarts = [];
+    this.syncOptionsFromForm(form);
 
     this.sendOne();
     this.scheduleNext();
