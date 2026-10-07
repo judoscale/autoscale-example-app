@@ -66,7 +66,7 @@
     <section class="space-y-8 border-t border-gray-200 pt-10">
       <div>
         <h2 class="text-sm font-semibold text-gray-900">Send requests</h2>
-        <p class="mt-1 text-sm text-gray-500">Choose how long each request takes and how fast to send them.</p>
+        <p class="mt-1 text-sm text-gray-500">Choose how long each request takes, how much of that time sleeps vs burns CPU, and how fast to send them.</p>
       </div>
 
       <%= form.field do %>
@@ -74,6 +74,13 @@
 
         <% latency_opts = { 1000 => "1 sec", 5000 => "5 sec", 10_000 => "10 sec", 25_000 => "25 sec" } %>
         <%= form.radio_buttons :latency, latency_opts %>
+      <% end %>
+
+      <%= form.field do %>
+        <%= form.label "How much of each request should sleep (vs burn CPU)?" %>
+
+        <% sleep_opts = { 100 => "100% sleep", 75 => "75% sleep", 50 => "50% sleep", 25 => "25% sleep", 0 => "0% sleep" } %>
+        <%= form.radio_buttons :sleep_percent, sleep_opts %>
       <% end %>
 
       <%= form.field do %>

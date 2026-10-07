@@ -8,7 +8,7 @@ class ApplicationFormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def radio_buttons(name, choices)
-    @template.tag.div class: "flex gap-8" do
+    @template.tag.div class: "flex flex-wrap gap-x-8 gap-y-3" do
       choices.map do |value, label|
         @template.tag.label class: "flex items-center gap-2" do
           @template.concat radio_button(name, value, class: "focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300")
