@@ -1,17 +1,34 @@
 class HomeController < ApplicationController
+  # Prepend so the latency deadline wraps other before/after filters
+  # (e.g. authenticity, importmap, propshaft), not just the action body.
+  prepend_around_action :enforce_latency, only: :show
   after_action :expose_request_metrics, only: :show
 
   def show
+    # Load-test requests skip the HTML body so response rendering does not
+    # compete with CPU-burn work on other threads.
+    head :ok if load_test_request?
+  end
+
+  private
+
+  def enforce_latency
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+
     @manager = RequestManager.new
     attrs = request_manager_attrs
     @manager.attributes = attrs if attrs.any?
 
-    if attrs.key?("latency") || attrs.key?("sleep_percent")
-      @manager.process!
+    if load_test_request?(attrs)
+      @manager.hold!(started: started) { yield }
+    else
+      yield
     end
   end
 
-  private
+  def load_test_request?(attrs = request_manager_attrs)
+    attrs.key?("latency") || attrs.key?("sleep_percent")
+  end
 
   def request_manager_attrs
     raw = if params[:request_manager].present?
