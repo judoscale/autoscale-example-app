@@ -16,7 +16,7 @@ class RequestManager
 
   # Holds until +latency+ ms of wall-clock time have elapsed since +started+.
   # Burns the CPU share first, runs the action/render next, then sleeps any
-  # remainder so total request duration tracks +latency+.
+  # remainder so total request duration tracks +latency+ when uncontended.
   def hold!(started: monotonic_now)
     total_seconds = latency.to_i / 1000.0
     deadline = started + total_seconds
@@ -32,21 +32,13 @@ class RequestManager
 
   private
 
-  # Burn CPU in a forked child so work does not hold the MRI GIL and can run
-  # in parallel across Puma threads. The child targets the same absolute
-  # monotonic deadline as the parent, so fork overhead does not extend the
-  # request. Parent wait is GIL-free. exit! skips Rails at_exit hooks.
+  # Busy-loop in-process so CPU work holds the MRI GIL, like typical Ruby
+  # request code. Under concurrency that serializes execution and creates
+  # realistic request queueing — unlike sleep, which releases the GIL.
   def burn_cpu_until!(finish)
-    return if monotonic_now >= finish
-
-    pid = fork do
-      while Process.clock_gettime(Process::CLOCK_MONOTONIC) < finish
-        Math.sqrt(rand)
-      end
-      exit!
+    while monotonic_now < finish
+      Math.sqrt(rand)
     end
-
-    Process.wait(pid)
   end
 
   def monotonic_now
