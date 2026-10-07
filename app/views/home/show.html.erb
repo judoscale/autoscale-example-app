@@ -101,17 +101,21 @@
         ></button>
       </div>
 
-      <aside class="rounded-md border border-sky-200 bg-sky-50 px-4 py-3 space-y-3">
+      <aside class="rounded-md border border-sky-200 bg-sky-50 px-4 py-5 space-y-6">
         <p class="text-sm text-sky-900">
           Prefer the terminal? These use the selected latency, sleep/CPU mix, and request rate.
         </p>
-        <div>
+        <div class="space-y-2">
           <p class="text-xs font-medium uppercase tracking-wide text-sky-800">One request</p>
-          <pre class="mt-1 overflow-x-auto rounded bg-sky-100/80 px-3 py-2 text-sm text-sky-950"><code x-text="curlCommand"></code></pre>
+          <pre class="overflow-x-auto rounded bg-sky-100/80 px-3 py-2.5 text-sm text-sky-950"><code x-text="curlCommand"></code></pre>
         </div>
-        <div>
+        <div class="space-y-2">
           <p class="text-xs font-medium uppercase tracking-wide text-sky-800">Load test (30s)</p>
-          <pre class="mt-1 overflow-x-auto rounded bg-sky-100/80 px-3 py-2 text-sm text-sky-950"><code x-text="vegetaCommand"></code></pre>
+          <pre class="overflow-x-auto rounded bg-sky-100/80 px-3 py-2.5 text-sm text-sky-950"><code x-text="vegetaCommand"></code></pre>
+        </div>
+        <div class="space-y-2">
+          <p class="text-xs font-medium uppercase tracking-wide text-sky-800">Load test (until Ctrl+C)</p>
+          <pre class="overflow-x-auto rounded bg-sky-100/80 px-3 py-2.5 text-sm text-sky-950"><code x-text="vegetaForeverCommand"></code></pre>
         </div>
       </aside>
     </section>

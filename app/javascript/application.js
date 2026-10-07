@@ -142,6 +142,15 @@ Alpine.data("requestInterceptor", (initialLatency, initialSleepPercent, initialR
     ].join("\n");
   },
 
+  get vegetaForeverCommand() {
+    return [
+      `echo 'GET ${this.loadTestUrl}' \\`,
+      `  | vegeta attack -rate=${this.rps} -duration=0 > results.bin`,
+      `# Ctrl+C when done, then:`,
+      `vegeta report results.bin`,
+    ].join("\n");
+  },
+
   handleSubmit(event) {
     if (this.sending) {
       this.stopSending();
