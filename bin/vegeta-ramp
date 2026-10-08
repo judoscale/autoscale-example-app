@@ -112,7 +112,7 @@ for ((i = 0; i < PHASES; i++)); do
   echo "Phase ${PHASE_NUM}: ${RATE} RPS, ${PHASE_DURATION}"
   echo "GET ${TARGET}" \
     | vegeta attack -rate="${RATE}/s" -duration="$PHASE_DURATION" \
-    | vegeta report -every=1s -type="$HIST_BUCKETS"
+    | vegeta report -type="$HIST_BUCKETS"
   echo
 done
 
