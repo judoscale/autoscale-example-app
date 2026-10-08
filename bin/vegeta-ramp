@@ -1,0 +1,130 @@
+#!/usr/bin/env bash
+# Ramped Vegeta load test: linear rate steps from start to end over the total duration.
+#
+# Usage: bin/vegeta-ramp <target-url> <duration> <start-rate> <end-rate> [phases]
+#
+#   target-url   URL to GET
+#   duration     Total test length (Go duration or seconds), e.g. 5m, 90s, 300
+#   start-rate   Requests per second at phase 1
+#   end-rate     Requests per second at the last phase
+#   phases       Optional phase count (default: ~30s each)
+
+set -euo pipefail
+
+HIST_BUCKETS='hist[0,50ms,100ms,200ms,500ms,1s,2s,5s,10s]'
+DEFAULT_PHASE_SECONDS=30
+
+usage() {
+  cat <<'EOF'
+Usage: bin/vegeta-ramp <target-url> <duration> <start-rate> <end-rate> [phases]
+
+  target-url   URL to GET
+  duration     Total test length (Go duration or seconds), e.g. 5m, 90s, 300
+  start-rate   Requests per second at phase 1
+  end-rate     Requests per second at the last phase
+  phases       Optional phase count (default: ~30s each)
+EOF
+  exit 1
+}
+
+duration_to_seconds() {
+  ruby -e '
+    s = ARGV[0].to_s.strip
+    total = 0.0
+    s.scan(/(\d+(?:\.\d+)?)(h|m|s|ms)/i) do |num, unit|
+      n = num.to_f
+      total += case unit.downcase
+               when "h" then n * 3600
+               when "m" then n * 60
+               when "s" then n
+               when "ms" then n / 1000.0
+               end
+    end
+    if total <= 0 && s.match?(/\A\d+(\.\d+)?\z/)
+      total = s.to_f
+    end
+    abort "invalid duration: #{ARGV[0].inspect} (try 90s, 5m, or 300)" if total <= 0
+    puts total
+  ' -- "$1"
+}
+
+format_duration() {
+  ruby -e '
+    seconds = ARGV[0].to_f
+    if (seconds - seconds.to_i).abs < 1e-9
+      puts "#{seconds.to_i}s"
+    else
+      puts "#{(seconds * 1000).round}ms"
+    end
+  ' -- "$1"
+}
+
+format_rate() {
+  ruby -e '
+    rate = ARGV[0].to_f
+    if (rate - rate.round).abs < 1e-9
+      puts rate.round.to_s
+    else
+      puts format("%.2f", rate).sub(/\.?0+$/, "")
+    end
+  ' -- "$1"
+}
+
+[[ $# -eq 4 || $# -eq 5 ]] || usage
+
+TARGET=$1
+DURATION_ARG=$2
+START_RATE=$3
+END_RATE=$4
+PHASES_ARG=${5:-}
+
+command -v vegeta >/dev/null 2>&1 || {
+  echo "vegeta is not installed or not on PATH" >&2
+  echo "Install: brew install vegeta" >&2
+  exit 1
+}
+
+TOTAL_SECONDS=$(duration_to_seconds "$DURATION_ARG")
+
+if [[ -n "$PHASES_ARG" ]]; then
+  [[ "$PHASES_ARG" =~ ^[1-9][0-9]*$ ]] || {
+    echo "phases must be a positive integer, got: $PHASES_ARG" >&2
+    exit 1
+  }
+  PHASES=$PHASES_ARG
+else
+  PHASES=$(ruby -e '
+    total = ARGV[0].to_f
+    step = ARGV[1].to_f
+    phases = (total / step).ceil
+    puts [phases, 1].max
+  ' -- "$TOTAL_SECONDS" "$DEFAULT_PHASE_SECONDS")
+fi
+
+PHASE_SECONDS=$(ruby -e 'puts ARGV[0].to_f / ARGV[1].to_i' -- "$TOTAL_SECONDS" "$PHASES")
+PHASE_DURATION=$(format_duration "$PHASE_SECONDS")
+
+echo "Ramped load test → $TARGET"
+echo "Total: $(format_duration "$TOTAL_SECONDS") · ${START_RATE} → ${END_RATE} RPS · ${PHASES} phase(s)"
+echo
+
+for ((i = 0; i < PHASES; i++)); do
+  RATE=$(ruby -e '
+    start_r = ARGV[0].to_f
+    end_r = ARGV[1].to_f
+    i = ARGV[2].to_i
+    n = ARGV[3].to_i
+    rate = n == 1 ? start_r : start_r + (end_r - start_r) * i / (n - 1)
+    puts rate
+  ' -- "$START_RATE" "$END_RATE" "$i" "$PHASES")
+  RATE_LABEL=$(format_rate "$RATE")
+  PHASE_NUM=$((i + 1))
+
+  echo "Phase ${PHASE_NUM}: ${RATE_LABEL} RPS, ${PHASE_DURATION}"
+  echo "GET ${TARGET}" \
+    | vegeta attack -rate="${RATE}/s" -duration="$PHASE_DURATION" \
+    | vegeta report -every=1s -type="$HIST_BUCKETS"
+  echo
+done
+
+echo "=== Load test complete ==="
