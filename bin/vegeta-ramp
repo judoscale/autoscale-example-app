@@ -59,17 +59,6 @@ format_duration() {
   ' -- "$1"
 }
 
-format_rate() {
-  ruby -e '
-    rate = ARGV[0].to_f
-    if (rate - rate.round).abs < 1e-9
-      puts rate.round.to_s
-    else
-      puts format("%.2f", rate).sub(/\.?0+$/, "")
-    end
-  ' -- "$1"
-}
-
 [[ $# -eq 4 || $# -eq 5 ]] || usage
 
 TARGET=$1
@@ -109,18 +98,18 @@ echo "Total: $(format_duration "$TOTAL_SECONDS") · ${START_RATE} → ${END_RATE
 echo
 
 for ((i = 0; i < PHASES; i++)); do
+  # vegeta -rate parses the count with Atoi, so rates must be whole numbers
   RATE=$(ruby -e '
     start_r = ARGV[0].to_f
     end_r = ARGV[1].to_f
     i = ARGV[2].to_i
     n = ARGV[3].to_i
     rate = n == 1 ? start_r : start_r + (end_r - start_r) * i / (n - 1)
-    puts rate
+    puts rate.round
   ' -- "$START_RATE" "$END_RATE" "$i" "$PHASES")
-  RATE_LABEL=$(format_rate "$RATE")
   PHASE_NUM=$((i + 1))
 
-  echo "Phase ${PHASE_NUM}: ${RATE_LABEL} RPS, ${PHASE_DURATION}"
+  echo "Phase ${PHASE_NUM}: ${RATE} RPS, ${PHASE_DURATION}"
   echo "GET ${TARGET}" \
     | vegeta attack -rate="${RATE}/s" -duration="$PHASE_DURATION" \
     | vegeta report -every=1s -type="$HIST_BUCKETS"
