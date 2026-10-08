@@ -221,9 +221,11 @@ Alpine.data("requestInterceptor", (initialLatency, initialSleepPercent) => ({
 Alpine.start();
 
 function makeRequest(form, onComplete) {
-  const formData = new FormData(form);
-  const params = new URLSearchParams(formData).toString();
-  const url = `${form.action}?${params}`;
+  const url = new URL(form.action);
+  // The page URL can already carry the curl query (latency, sleep_percent).
+  // A GET form replaces that query; appending another "?" swallows
+  // request_manager[latency] into the previous value.
+  url.search = new URLSearchParams(new FormData(form)).toString();
 
   fetch(url).then((response) => {
     const queueHeader = response.headers.get("X-Queue-Time");
