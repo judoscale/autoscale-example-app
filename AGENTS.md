@@ -40,7 +40,8 @@ HEADLESS=0 bundle exec rails test test/system
 ```
 
 Test env defaults (set in `test/test_helper.rb` when unset): `SECRET_KEY_BASE`,
-`REDIS_URL=redis://127.0.0.1:6379/15`.
+`REDIS_URL=redis://127.0.0.1:6379/15`. If `app/assets/builds/tailwind.css` is
+missing (fresh clone / CI), the helper runs `rails tailwindcss:build`.
 
 ### Conventions
 

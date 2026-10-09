@@ -8,6 +8,11 @@ require_relative "../config/environment"
 require "rails/test_help"
 require "sidekiq/testing"
 
+# Built CSS is gitignored; CI and fresh checkouts need it for HTML responses.
+unless Rails.root.join("app/assets/builds/tailwind.css").exist?
+  system(RbConfig.ruby, Rails.root.join("bin/rails").to_s, "tailwindcss:build", exception: true)
+end
+
 module SidekiqRedisTestHelper
   def flush_sidekiq_redis!
     Sidekiq.redis(&:flushdb)
