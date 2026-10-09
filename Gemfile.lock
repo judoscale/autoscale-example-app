@@ -74,6 +74,8 @@ GEM
       mutex_m
       securerandom (>= 0.3)
       tzinfo (~> 2.0)
+    addressable (2.9.0)
+      public_suffix (>= 2.0.2, < 8.0)
     base64 (0.3.0)
     benchmark (0.5.0)
     bigdecimal (4.1.2)
@@ -81,9 +83,21 @@ GEM
     bootsnap (1.16.0)
       msgpack (~> 1.2)
     builder (3.3.0)
+    capybara (3.40.0)
+      addressable
+      matrix
+      mini_mime (>= 0.1.3)
+      nokogiri (~> 1.11)
+      rack (>= 1.6.0)
+      rack-test (>= 0.6.3)
+      regexp_parser (>= 1.5, < 3.0)
+      xpath (~> 3.2)
     concurrent-ruby (1.3.6)
     connection_pool (2.4.1)
     crass (1.0.6)
+    cuprite (0.18)
+      capybara (~> 3.0)
+      ferrum (~> 0.18.0)
     date (3.3.3)
     debug (1.8.0)
       irb (>= 1.5.0)
@@ -92,6 +106,11 @@ GEM
       rails (>= 3.0.0)
     drb (2.2.3)
     erubi (1.13.1)
+    ferrum (0.18.0)
+      addressable (~> 2.5)
+      base64 (~> 0.2)
+      concurrent-ruby (~> 1.1)
+      websocket-driver (~> 0.7)
     fiddle (1.1.6)
     globalid (1.1.0)
       activesupport (>= 5.0)
@@ -120,11 +139,10 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.2)
+    matrix (0.4.3)
     method_source (1.1.0)
     mini_mime (1.1.2)
-    minitest (6.0.6)
-      drb (~> 2.0)
-      prism (~> 1.5)
+    minitest (5.27.0)
     msgpack (1.7.2)
     mutex_m (0.3.0)
     net-imap (0.3.7)
@@ -144,12 +162,12 @@ GEM
     nokogiri (1.19.3-x86_64-linux-gnu)
       racc (~> 1.4)
     ostruct (0.6.1)
-    prism (1.9.0)
     propshaft (0.7.0)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
       rack
       railties (>= 7.0.0)
+    public_suffix (7.0.5)
     puma (5.6.6)
       nio4r (~> 2.0)
     racc (1.8.1)
@@ -186,6 +204,7 @@ GEM
       zeitwerk (~> 2.5)
     rake (13.4.2)
     redis (4.8.1)
+    regexp_parser (2.13.1)
     reline (0.3.7)
       io-console (~> 0.5)
     securerandom (0.4.1)
@@ -211,6 +230,8 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    xpath (3.2.0)
+      nokogiri (~> 1.8)
     zeitwerk (2.8.1)
 
 PLATFORMS
@@ -225,6 +246,8 @@ DEPENDENCIES
   base64
   bigdecimal
   bootsnap
+  capybara
+  cuprite
   debug
   dockerfile-rails (>= 1.7)
   fiddle
@@ -232,6 +255,7 @@ DEPENDENCIES
   judoscale-rails (~> 1.9.0)
   judoscale-sidekiq (~> 1.9.0)
   logger
+  minitest (~> 5.25)
   mutex_m
   ostruct
   propshaft
