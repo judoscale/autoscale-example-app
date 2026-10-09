@@ -22,6 +22,13 @@ group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
 end
 
+group :test do
+  # Rails 7.0's test runner is not compatible with minitest 6 yet.
+  gem "minitest", "~> 5.25"
+  gem "capybara"
+  gem "cuprite"
+end
+
 group :development do
   gem "web-console"
 end

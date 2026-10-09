@@ -28,3 +28,9 @@
 !/app/assets/builds/.keep
 
 .env.local
+
+# Redis dump from local/dev redis
+/dump.rdb
+
+# Capybara / system test artifacts
+/tmp/capybara/
