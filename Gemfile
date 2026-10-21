@@ -35,5 +35,5 @@ end
 
 gem "dockerfile-rails", ">= 1.7", :group => :development
 
-gem "judoscale-rails", "~> 1.9.0"
-gem "judoscale-sidekiq", "~> 1.9.0"
+gem "judoscale-rails", "~> 1.13.0"
+gem "judoscale-sidekiq", "~> 1.13.0"
