@@ -1,0 +1,14 @@
+services:
+  web:
+    command: bin/rails server -b 0.0.0.0 -p "$PORT"
+    env:
+      # Rails blocks unknown hosts in development; allow the portal domain.
+      RAILS_DEVELOPMENT_HOSTS: .onamp.dev
+    health: /
+    portal:
+      title: Autoscale Example App
+  worker:
+    command: bundle exec sidekiq -c 2 -q urgent -q default
+  css:
+    # [always] keeps the watcher running without a TTY.
+    command: bin/rails "tailwindcss:watch[always]"
