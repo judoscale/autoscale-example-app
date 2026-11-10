@@ -33,7 +33,5 @@ group :development do
   gem "web-console"
 end
 
-gem "dockerfile-rails", ">= 1.7", :group => :development
-
 gem "judoscale-rails", "~> 1.13.0"
 gem "judoscale-sidekiq", "~> 1.13.0"
