@@ -34,3 +34,6 @@
 
 # Capybara / system test artifacts
 /tmp/capybara/
+
+# Amp orb portal registrations
+/.amp/portals/*

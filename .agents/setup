@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# Prepares an Amp orb: Ruby (mise), gems, Redis, Chrome for Cuprite, Tailwind build.
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+step() { echo "==> $*"; }
+timed() { local start=$SECONDS; "$@"; echo "    (${*:1:2}: $((SECONDS - start))s)"; }
+
+# --- System packages ---------------------------------------------------------
+if ! command -v redis-server >/dev/null; then
+  step "Installing redis-server"
+  timed sudo apt-get update -qq
+  timed sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq redis-server
+fi
+step "Enabling redis-server (systemd)"
+sudo systemctl enable --now redis-server >/dev/null 2>&1
+
+# --- Ruby via mise -------------------------------------------------------------
+mise_bin="$HOME/.local/bin/mise"
+if [ ! -x "$mise_bin" ]; then
+  step "Installing mise"
+  timed bash -c 'curl -fsSL https://mise.run | sh'
+fi
+
+ruby_version="$(sed 's/^ruby-//' .ruby-version)"
+step "Installing Ruby $ruby_version"
+timed "$mise_bin" use --global --yes "ruby@$ruby_version"
+
+# Expose mise shims to login shells (Amp, services) without interactive activation.
+profile_marker="# mise shims (autoscale-example-app orb setup)"
+if ! grep -Fqx "$profile_marker" "$HOME/.bash_profile" 2>/dev/null; then
+  cat >> "$HOME/.bash_profile" <<'EOF'
+
+# mise shims (autoscale-example-app orb setup)
+case ":$PATH:" in
+  *":$HOME/.local/share/mise/shims:"*) ;;
+  *) export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH" ;;
+esac
+EOF
+fi
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
+
+# --- Gems ----------------------------------------------------------------------
+step "Installing gems"
+timed bundle install --jobs "$(nproc)" --quiet
+
+# --- Chrome for Cuprite system tests -------------------------------------------
+# Ferrum looks for `chrome` on PATH; point it at the Chrome agent-browser ships.
+if ! command -v chrome >/dev/null; then
+  chrome_bin="$(ls -d "$HOME"/.agent-browser/browsers/chrome-*/chrome 2>/dev/null | sort -V | tail -n1 || true)"
+  if [ -n "$chrome_bin" ]; then
+    step "Linking $chrome_bin to ~/.local/bin/chrome"
+    mkdir -p "$HOME/.local/bin"
+    ln -sfn "$chrome_bin" "$HOME/.local/bin/chrome"
+  else
+    echo "    WARNING: no Chrome found; system tests need BROWSER_PATH" >&2
+  fi
+fi
+
+# --- Assets ----------------------------------------------------------------------
+step "Building Tailwind CSS"
+timed bin/rails tailwindcss:build >/dev/null
+
+step "Done"

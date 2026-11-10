@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Runs on every orb wake: make sure Redis (needed by Sidekiq and tests) is up.
+set -euo pipefail
+
+if command -v redis-cli >/dev/null && ! redis-cli ping >/dev/null 2>&1; then
+  sudo systemctl start redis-server
+fi
