@@ -5,11 +5,11 @@ ruby file: ".ruby-version"
 
 # Only the Rails frameworks loaded in config/application.rb, instead of the
 # "rails" meta-gem, which would also install Active Storage, Active Record, etc.
-gem "railties", "~> 7.0.0"
-gem "actionpack", "~> 7.0.0"
-gem "actionview", "~> 7.0.0"
-gem "activemodel", "~> 7.0.0"
-gem "activesupport", "~> 7.0.0"
+gem "railties", "~> 8.0.0"
+gem "actionpack", "~> 8.0.0"
+gem "actionview", "~> 8.0.0"
+gem "activemodel", "~> 8.0.0"
+gem "activesupport", "~> 8.0.0"
 gem "propshaft"
 gem "puma", "~> 7.2"
 gem "importmap-rails"
@@ -29,8 +29,6 @@ group :development, :test do
 end
 
 group :test do
-  # Rails 7.0's test runner is not compatible with minitest 6 yet.
-  gem "minitest", "~> 5.25"
   gem "capybara"
   gem "cuprite"
 end
