@@ -1,0 +1,16 @@
+# Security updates only: open-pull-requests-limit 0 turns off routine version
+# updates, while Dependabot security updates still open PRs for vulnerable
+# dependencies. Security updates must be enabled in the repository settings.
+version: 2
+updates:
+  - package-ecosystem: bundler
+    directory: /
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 0
