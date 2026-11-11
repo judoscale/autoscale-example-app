@@ -3,7 +3,13 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby file: ".ruby-version"
 
-gem "rails", "~> 7.0.0"
+# Only the Rails frameworks loaded in config/application.rb, instead of the
+# "rails" meta-gem, which would also install Active Storage, Active Record, etc.
+gem "railties", "~> 7.0.0"
+gem "actionpack", "~> 7.0.0"
+gem "actionview", "~> 7.0.0"
+gem "activemodel", "~> 7.0.0"
+gem "activesupport", "~> 7.0.0"
 gem "propshaft"
 gem "puma", "~> 7.2"
 gem "importmap-rails"
