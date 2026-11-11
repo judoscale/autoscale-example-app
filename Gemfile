@@ -5,12 +5,12 @@ ruby file: ".ruby-version"
 
 gem "rails", "~> 7.0.0"
 gem "propshaft"
-gem "puma", "~> 5.0"
+gem "puma", "~> 7.2"
 gem "importmap-rails"
 gem "tailwindcss-rails", "~> 3.3", ">= 3.3.1"
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]
 gem "bootsnap", require: false
-gem "sidekiq", "~> 6.0"
+gem "sidekiq", "~> 7.3"
 gem "ostruct"
 gem "logger"
 gem "base64"
